@@ -1,36 +1,39 @@
 import "./assets/css/tailwind.css";
 
-let switchers = document.querySelectorAll(".switcher");
-let sysSwitcher = document.querySelector("#system");
+let foods = document.querySelectorAll('.food')
+let dropZones = document.querySelectorAll('.menu')
+let focusFood = null
 
-if (
-  localStorage.getItem("color-theme") === "dark" ||
-  (!("color-theme" in localStorage) &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches)
-) {
-  document.documentElement.classList.add("dark");
-} else {
-  document.documentElement.classList.remove("dark");
-}
+foods.forEach(food =>{
+  food.addEventListener("dragstart", ()=>{
+    focusFood = food;
+    food.classList.add("shadow-xl")
+  })
 
-switchers.forEach((switcher) => {
-  switcher.addEventListener("click", function () {
-    if (localStorage.getItem("color-theme")) {
-      if (localStorage.getItem("color-theme") === "light") {
-        document.documentElement.classList.add("dark");
-        localStorage.setItem("color-theme", "dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-        localStorage.setItem("color-theme", "light");
-      }
-    } else {
-      if (document.documentElement.classList.contains("dark")) {
-        document.documentElement.classList.remove("dark");
-        localStorage.setItem("color-theme", "light");
-      } else {
-        document.documentElement.classList.add("dark");
-        localStorage.setItem("color-theme", "dark");
-      }
-    }
-  });
-});
+  food.addEventListener("dragend", ()=>{
+    food.classList.remove("shadow-xl")
+  })
+})
+
+dropZones.forEach(dropZone =>{
+  dropZone.addEventListener('drop', (e)=>{
+    e.preventDefault()
+    dropZone.append(focusFood)
+    dropZone.parentElement.classList.remove('before:scale-105')
+  })
+})
+
+dropZones.forEach(dropZone =>{
+  dropZone.addEventListener('dragover', (e)=>{
+    e.preventDefault()
+    dropZone.parentElement.classList.add('before:scale-105')
+    dropZone.removeChild(focusFood)
+  })
+})
+
+dropZones.forEach(dropZone =>{
+  dropZone.addEventListener('dragleave', (e)=>{
+    e.preventDefault()
+    dropZone.parentElement.classList.remove('before:scale-105')
+  })
+})

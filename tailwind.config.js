@@ -2,7 +2,8 @@
 module.exports = {
   content: ["index.html", "./src/**/*.{js,jsx,ts,tsx,vue,html}"],
   presets: [],
-  darkMode: "class", // or 'class'
+  safelist : ['shadow-xl', 'before:scale-105', 'before:scale-100'],
+  darkMode: "media", // or 'class'
   theme: {
     screens: {
       sm: "640px",
